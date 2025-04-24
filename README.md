@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Assets/MarkdownLogo.png" width="512" alt="Markdown Logo">
+  <img src="Assets/MarkdownLogo.png" width="256" alt="Markdown Logo">
 </p>
 
 A simple, clean web-based Markdown editor and previewer with real-time rendering!
