@@ -1,0 +1,875 @@
+/* Modern iOS Markdown Viewer */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=SF+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Common sizes and colors */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --success-color: #34c759;
+  --error-color: #ff3b30;
+
+  --primary-color: #007aff;
+  --primary-hover: #0063cc;
+}
+
+/* Light theme */
+:root,
+:root[data-theme="light"] {
+  --bg-color: #f2f2f7;
+  --card-bg: #ffffff;
+  --text-primary: #1c1c1e;
+  --text-secondary: #6c6c70;
+  --border-color: #e5e5ea;
+  --content-bg: #ffffff;
+  --code-bg: #f2f2f7;
+  --blockquote-bg: rgba(0, 122, 255, 0.08);
+  --table-header-bg: #f9f9fa;
+  --details-bg: #f9f9fa;
+  --input-text: #1c1c1e;
+  --input-placeholder: #8e8e93;
+  --clear-button-bg: #e5e5ea;
+  --clear-button-hover: #d1d1d6;
+  --clear-button-text: #1c1c1e;
+  --mermaid-bg: #ffffff;
+  --pre-bg: #1c1c1e;
+  --pre-text: #ffffff;
+
+  /* Header colors */
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --header-blur: 20px;
+  --header-border: rgba(0, 0, 0, 0.05);
+  --app-icon-bg: #007aff;
+  --app-icon-color: #ffffff;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme */
+:root[data-theme="dark"] {
+  --bg-color: #1c1c1e;
+  --card-bg: #2c2c2e;
+  --text-primary: #ffffff;
+  --text-secondary: #aeaeb2;
+  --border-color: #38383a;
+  --content-bg: #2c2c2e;
+  --code-bg: #3a3a3c;
+  --blockquote-bg: rgba(10, 132, 255, 0.15);
+  --table-header-bg: #3a3a3c;
+  --details-bg: #3a3a3c;
+  --input-text: #ffffff;
+  --input-placeholder: #8e8e93;
+  --clear-button-bg: #3a3a3c;
+  --clear-button-hover: #48484a;
+  --clear-button-text: #ffffff;
+  --mermaid-bg: #2c2c2e;
+  --pre-bg: #3a3a3c;
+  --pre-text: #ffffff;
+
+  /* Header colors */
+  --header-bg: rgba(44, 44, 46, 0.8);
+  --header-blur: 20px;
+  --header-border: rgba(255, 255, 255, 0.05);
+  --app-icon-bg: #0a84ff;
+  --app-icon-color: #ffffff;
+
+  /* Shadows for dark mode */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* Basic reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body styles */
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "SF Pro Display", system-ui, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  line-height: 1.6;
+  padding: 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Header */
+.ios-style-header {
+  position: relative;
+  text-align: center;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 1000px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding: 1.5rem;
+  z-index: 10;
+}
+
+.header-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--header-bg);
+  backdrop-filter: blur(var(--header-blur));
+  -webkit-backdrop-filter: blur(var(--header-blur));
+  border: 1px solid var(--header-border);
+  border-radius: var(--radius-lg);
+  z-index: -1;
+  box-shadow: var(--shadow-md);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.header-content:hover {
+  transform: translateY(-2px);
+}
+
+.app-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-md);
+  background-color: var(--app-icon-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.app-icon svg {
+  width: 32px;
+  height: 32px;
+  stroke: var(--app-icon-color);
+  stroke-width: 2;
+}
+
+.header-text {
+  text-align: left;
+}
+
+.ios-style-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+}
+
+.ios-style-header .subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin: 0;
+  text-align: left;
+}
+
+/* Theme Switch */
+.switch {
+  font-size: 17px;
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  display: inline-block;
+  width: 4em;
+  height: 2.2em;
+  border-radius: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2a2a2a;
+  transition: 0.4s;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.2em;
+  width: 1.2em;
+  border-radius: 20px;
+  left: 0.5em;
+  bottom: 0.5em;
+  transition: 0.4s;
+  transition-timing-function: cubic-bezier(0.81, -0.04, 0.38, 1.5);
+  box-shadow: inset 8px -4px 0px 0px #fff;
+}
+
+.switch input:checked + .slider {
+  background-color: #00a6ff;
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(1.8em);
+  box-shadow: inset 15px -4px 0px 15px #ffcf48;
+}
+
+.star {
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  width: 5px;
+  transition: all 0.4s;
+  height: 5px;
+}
+
+.star_1 {
+  left: 2.5em;
+  top: 0.5em;
+}
+
+.star_2 {
+  left: 2.2em;
+  top: 1.2em;
+}
+
+.star_3 {
+  left: 3em;
+  top: 0.9em;
+}
+
+.switch input:checked ~ .slider .star {
+  opacity: 0;
+}
+
+.cloud {
+  width: 3.5em;
+  position: absolute;
+  bottom: -1.4em;
+  left: -1.1em;
+  opacity: 0;
+  transition: all 0.4s;
+}
+
+.switch input:checked ~ .slider .cloud {
+  opacity: 1;
+}
+
+/* Regular header */
+header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  max-width: 1000px;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+/* Main container */
+#container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex: 1;
+}
+
+/* Main panels */
+.editor-section,
+.preview-section {
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  width: 100%;
+  flex: 1;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+#markdown-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* Text areas */
+textarea,
+#markdown-preview {
+  width: 100%;
+  min-height: 150px;
+  padding: 1.5rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  text-align: left;
+  background-color: var(--content-bg);
+  margin: 1rem 0 1.5rem;
+  transition: all 0.2s ease;
+  line-height: 1.6;
+}
+
+textarea {
+  font-family: "SF Mono", "Menlo", monospace;
+  resize: none;
+  box-shadow: var(--shadow-sm);
+  color: var(--input-text);
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+textarea::-webkit-scrollbar {
+  display: none;
+}
+
+textarea {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+textarea::placeholder {
+  color: var(--input-placeholder);
+  opacity: 0.8;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb, 10, 132, 255), 0.2);
+}
+
+#markdown-preview {
+  overflow-x: auto;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Buttons */
+.button-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+button[type="submit"] {
+  background-color: var(--primary-color);
+  color: white;
+  flex: 1;
+}
+
+button[type="submit"]:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+#clear-button {
+  background-color: var(--clear-button-bg);
+  color: var(--clear-button-text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+#clear-button::before {
+  content: "🧹";
+  font-size: 1.2em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.3rem;
+  transform: translateY(-1px);
+}
+
+#clear-button:hover {
+  background-color: var(--clear-button-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+#clear-button:active {
+  transform: translateY(0);
+}
+
+button.success {
+  background-color: var(--success-color);
+  box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.2);
+}
+
+/* Empty state */
+.empty-message {
+  color: var(--text-secondary);
+  font-style: italic;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+/* Loading styles */
+.loading {
+  opacity: 0.7;
+  position: relative;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Markdown styling */
+#markdown-preview h1 {
+  font-size: 2rem;
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  text-align: left;
+}
+
+#markdown-preview h2 {
+  font-size: 1.5rem;
+  margin: 1.5rem 0 1rem;
+  text-align: left;
+}
+
+#markdown-preview h3 {
+  font-size: 1.25rem;
+  margin: 1.25rem 0 0.75rem;
+  text-align: left;
+}
+
+#markdown-preview h4,
+#markdown-preview h5,
+#markdown-preview h6 {
+  margin: 1rem 0 0.5rem;
+  text-align: left;
+}
+
+#markdown-preview p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+}
+
+#markdown-preview ul,
+#markdown-preview ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+#markdown-preview li {
+  margin-bottom: 0.5rem;
+}
+
+#markdown-preview a {
+  color: var(--primary-color);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+#markdown-preview a:hover {
+  border-bottom-color: var(--primary-color);
+}
+
+#markdown-preview blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1.25rem;
+  border-left: 4px solid var(--primary-color);
+  background-color: var(--blockquote-bg);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-style: italic;
+}
+
+#markdown-preview code {
+  font-family: "SF Mono", "Menlo", monospace;
+  background-color: var(--code-bg);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+#markdown-preview pre {
+  background-color: var(--pre-bg);
+  color: var(--pre-text);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+#markdown-preview pre code {
+  font-family: "SF Mono", "Menlo", monospace;
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+#markdown-preview img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin: 1rem 0;
+}
+
+#markdown-preview table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+#markdown-preview table th,
+#markdown-preview table td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+#markdown-preview table th {
+  background-color: var(--table-header-bg);
+}
+
+#markdown-preview hr {
+  height: 1px;
+  background-color: var(--border-color);
+  border: none;
+  margin: 2rem 0;
+}
+
+/* Copy button */
+#copy-button {
+  background-color: var(--primary-color);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+#copy-button::before {
+  content: "📋";
+  font-size: 1.2em;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.3rem;
+  transform: translateY(-1px);
+}
+
+#copy-button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+#copy-button:active {
+  transform: translateY(0);
+}
+
+/* GitHub Markdown extras */
+.task-list-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.task-list-item input[type="checkbox"] {
+  margin-right: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+/* Footnotes */
+.footnotes {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.footnote {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.footnote-ref {
+  font-size: 0.75rem;
+  position: relative;
+  top: -0.5em;
+  text-decoration: none;
+  margin-left: 0.2rem;
+}
+
+.footnote-backref {
+  text-decoration: none;
+}
+
+/* Definition lists */
+dl {
+  margin: 1rem 0;
+}
+
+dt {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+dd {
+  margin-left: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Math stuff */
+.math {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Mermaid diagrams */
+.mermaid {
+  background-color: var(--mermaid-bg);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  margin: 1rem 0;
+  border: 1px solid var(--border-color);
+}
+
+/* Collapsible sections */
+details {
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background-color: var(--details-bg);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0.5rem 0;
+}
+
+details[open] summary {
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.75rem;
+}
+
+/* HTML in markdown */
+#markdown-preview div {
+  max-width: 100%;
+}
+
+/* Footer */
+footer {
+  margin-top: auto;
+  padding: 1.5rem 0;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.heart {
+  color: #ff3b30;
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+/* Mobile styles */
+@media (max-width: 992px) {
+  #container {
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 800px;
+  }
+
+  .editor-section,
+  .preview-section {
+    width: 100%;
+  }
+
+  textarea,
+  #markdown-preview {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 1rem 0.75rem;
+  }
+
+  header {
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  .subtitle {
+    font-size: 0.9rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .editor-section,
+  .preview-section {
+    padding: 1rem;
+  }
+
+  textarea,
+  #markdown-preview {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+    margin: 0.75rem 0 1rem;
+    min-height: 250px;
+  }
+
+  button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .button-container {
+    gap: 0.5rem;
+  }
+
+  .switch {
+    top: 1.75rem;
+    right: 1.75rem;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0.75rem 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .switch {
+    top: 1.5rem;
+    right: 1.5rem;
+    font-size: 14px;
+  }
+
+  .editor-section,
+  .preview-section {
+    padding: 0.75rem;
+  }
+
+  textarea,
+  #markdown-preview {
+    min-height: 200px;
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  footer {
+    padding: 1rem 0;
+    font-size: 0.8rem;
+  }
+}
