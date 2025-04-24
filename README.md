@@ -21,7 +21,7 @@ If you want to run it locally:
 
 ```bash
 git clone https://github.com/crunny/Markdown.git
-cd MarkdownViewer
+cd Markdown
 # Open index.html in your browser
 ```
 
