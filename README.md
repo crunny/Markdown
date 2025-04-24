@@ -1,4 +1,4 @@
-<p align="center">
+<p align="left">
   <img src="Assets/MarkdownLogo.png" width="256" alt="Markdown Logo">
 </p>
 
