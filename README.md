@@ -15,7 +15,7 @@ A simple, clean web-based Markdown editor and previewer with real-time rendering
 
 ## 🚀 Getting Started
 
-You can access the live version of this app at [readmd.vercel.app].
+You can access the live version of this app at [ReadMD](https://readmd.vercel.app/).
 
 If you want to run it locally:
 
